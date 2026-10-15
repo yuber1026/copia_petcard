@@ -4,7 +4,7 @@ import fs from 'fs';
 
 export default defineConfig(({ command }) => ({
   plugins: [vue()],
-  base: '/copia_petcard/',
+  base: process.env.GITHUB_ACTIONS ? '/copia_petcard/' : '/',
   server:
     command === 'serve'
       ? {
