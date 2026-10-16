@@ -195,9 +195,19 @@ const SALT_ROUNDS = 10
 
 const app = express()
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'https://localhost:5173'
+// Render (y cualquier hosting con proxy) envia las peticiones a traves de un proxy:
+// sin esto, el limite de intentos de login contaria por IP del proxy y no por usuario.
+app.set('trust proxy', 1)
+
+// FRONTEND_URL puede tener varios origenes separados por coma, por ejemplo:
+// https://yuber1026.github.io,https://petcard.yuberfranco2603.workers.dev
+const FRONTEND_URLS = (process.env.FRONTEND_URL || 'https://localhost:5173')
+  .split(',')
+  .map(u => u.trim())
+  .filter(Boolean)
+
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: FRONTEND_URLS,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
