@@ -23,6 +23,11 @@ jobs:
           node-version: 20
       - run: npm install
       - run: npm run build
+        env:
+            VITE_SUPABASE_URL: https://evaanefrbursctyosbbp.supabase.co/rest/v1/
+            VITE_SUPABASE_ANON_KEY: sb_publishable_RZefx_tjVOXZJqB2bF9Xsw_GVB4n_7K
+
+        CI: false
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist

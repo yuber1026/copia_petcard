@@ -243,10 +243,12 @@ if (!process.env.DATABASE_URL) {
 types.setTypeParser(1082, val => val) // DATE
 types.setTypeParser(1114, val => val) // TIMESTAMP WITHOUT TIME ZONE
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
-})
+   const usaSSL = !/@(localhost|127\.0\.0\.1|db)[:/]/.test(process.env.DATABASE_URL)
+
+   const pool = new Pool({
+     connectionString: process.env.DATABASE_URL,
+     ssl: usaSSL ? { rejectUnauthorized: false } : false
+   })
 
 pool.query('SELECT 1')
   .then(() => console.log('✓ Conectado a Supabase (PostgreSQL) correctamente'))
